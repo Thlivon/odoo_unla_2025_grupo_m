@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Acción que abre al vista-->
+    <record id="action_estate_property" model="ir.actions.act_window">
+        <field name="name">Propiedades</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form,search</field>
+    </record>
+
+    <!-- Vista de tipo list -->
+    <record id="view_estate_property_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+            <list string="Propiedades">
+                <field name="name"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="facades"/>
+                <field name="garage"/>
+                <field name="garden"/>
+                <field name="garden_area"/>
+                <field name="garden_orientation"/>
+                <field name="date_availability"/>
+                <field name="postcode"/>
+            </list>
+        </field>
+    </record>
+    
+    <!-- Vista de tipo search -->
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Search Properties">
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="facades"/>
+
+                <filter string="Mis propiedades" name="my_properties_filter" domain="[('create_uid', '=', uid)]"/>
+                
+                <group expand="0" string="Group By">
+                    <filter string="Usuario" name="group_by_create_uid" context="{'group_by': 'create_uid'}"/>
+                </group>
+
+                <group expand="0" string="Group By">
+                    <filter string="Fecha disponibilidad" name="group_by_date_availability_month" context="{'group_by': 'date_availability:month'}"/>
+                </group>
+
+                <group expand="0" string="Group By">
+                    <filter string="Código Postal" name="group_by_postcode" context="{'group_by': 'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    
+</odoo>
