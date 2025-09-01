@@ -48,13 +48,7 @@
                 
                 <group expand="0" string="Group By">
                     <filter string="Usuario" name="group_by_create_uid" context="{'group_by': 'create_uid'}"/>
-                </group>
-
-                <group expand="0" string="Group By">
                     <filter string="Fecha disponibilidad" name="group_by_date_availability_month" context="{'group_by': 'date_availability:month'}"/>
-                </group>
-
-                <group expand="0" string="Group By">
                     <filter string="Código Postal" name="group_by_postcode" context="{'group_by': 'postcode'}"/>
                 </group>
             </search>
