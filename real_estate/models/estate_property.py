@@ -1,4 +1,6 @@
 from odoo import fields, models
+#Importo relativedelta para trabajar con fechas y horas
+from dateutil.relativedelta import relativedelta
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -7,9 +9,19 @@ class EstateProperty(models.Model):
     name = fields.Char(string="Título", required=True)
     description = fields.Text(string="Descripción")
     postcode = fields.Char(string="Código Postal")
-    date_availability = fields.Date(string="Fecha disponibilidad")
+    date_availability = fields.Date(
+        string="Fecha disponibilidad"
+        #19) copy = False
+        ,copy=False 
+        #20) Por defecto date_availability sera la fecha de hoy +3 meses
+        ,default=lambda self: fields.Date.today() + relativedelta(months=3)
+    )
     expected_price = fields.Float(string="Precio esperado")
-    selling_price = fields.Float(string="Precio de venta")
+    selling_price = fields.Float(
+        string="Precio de venta"
+        #19) copy = False
+        ,copy=False
+    )
     bedrooms = fields.Integer(string="Habitaciones", default=2)
     living_area = fields.Integer(string="Superficie cubierta")
     facades = fields.Integer(string="Fachadas")
@@ -21,8 +33,22 @@ class EstateProperty(models.Model):
             ('south', 'Sur'),
             ('east', 'Este'),
             ('west', 'Oeste'),
-        ],
-        string="Orientación del jardín",
-        default='north'
+        ]
+        ,string="Orientación del jardín"
+        ,default='north'
     )
     garden_area = fields.Integer(string="Superficie jardín")
+    #21) Nuevo campo de state
+    state = fields.Selection(
+        selection=[
+            ('new', 'Nuevo'),
+            ('offer_received', 'Oferta recibida'),
+            ('offer_accepted', 'Oferta aceptada'),
+            ('sold', 'Vendido'),
+            ('canceled', 'Cancelado'),
+        ]
+        ,string="Estado"
+        ,required=True
+        ,copy=False
+        ,default='new'
+    )
