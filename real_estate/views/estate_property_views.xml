@@ -48,18 +48,9 @@
 
                     <group expand="0" string="Group By">
                         <filter string="Usuario" name="group_by_create_uid" context="{'group_by': 'create_uid'}"/>
-                    </group>
-
-                    <group expand="0" string="Group By">
                         <filter string="Fecha disponibilidad" name="group_by_date_availability_month" context="{'group_by': 'date_availability:month'}"/>
-                    </group>
-
-                    <group expand="0" string="Group By">
                         <filter string="Código Postal" name="group_by_postcode" context="{'group_by': 'postcode'}"/>
-                    </group>
-
-                    <!--24) Agrupar por estado-->
-                    <group expand="0" string="Group By">
+                        <!--24) Agrupar por estado-->
                         <filter string="Estado" name="group_by_state" context="{'group_by': 'state'}"/>
                     </group>
                 </search>
@@ -84,6 +75,8 @@
                         </group>
                         <group>
                             <group>
+                                <!--30) Se agrega el campo property_type_id-->
+                                <field name="property_type_id"/>
                                 <field name="postcode"/>
                                 <field name="date_availability"/>
                             </group>
@@ -107,6 +100,13 @@
                                         <field name="garden_area"/>
                                         <field name="garden_orientation"/>
                                     </group>
+                                </group>
+                            </page>
+                            <!--30) Se agrega el campo property_type_id-->
+                            <page string="Más info.">
+                                <group>
+                                    <field name="buyer_id"/>
+                                    <field name="salesman_id"/>
                                 </group>
                             </page>
                         </notebook>

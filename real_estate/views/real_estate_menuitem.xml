@@ -4,5 +4,13 @@
         <menuitem id="estate_menu_advertisements" name="Anuncios">
             <menuitem id="estate_menu_property" name="Propiedades" action="action_estate_property"/>
         </menuitem>
+        <!--28)Menu Ajustes-->
+        <menuitem id="estate_menu_settings" name="Ajustes">
+            <menuitem id="estate_menu_property_type" name="Tipos de propiedad" action="action_estate_property_type"/>
+        </menuitem>
+        <menuitem id="estate_menu_test" name="Test">
+            <menuitem id="estate_menu_property_test" name="test"/>
+        </menuitem>
     </menuitem>
+        
 </odoo>

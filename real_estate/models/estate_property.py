@@ -52,3 +52,19 @@ class EstateProperty(models.Model):
         ,copy=False
         ,default='new'
     )
+    #29) Nuevos campos property_type_id, buyer_id y salesman_id
+    property_type_id = fields.Many2one(
+        comodel_name='estate.property.type'
+        ,string="Tipo Propiedad"
+        ,required=True
+    )
+    buyer_id = fields.Many2one(
+        comodel_name='res.partner'
+        ,string="Comprador"
+    )
+    salesman_id = fields.Many2one(
+        comodel_name='res.users'
+        ,string="Vendedor"
+        ,copy=False
+        ,default=lambda self: self.env.user
+    )
