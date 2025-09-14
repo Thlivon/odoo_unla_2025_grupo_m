@@ -4,7 +4,7 @@ from dateutil.relativedelta import relativedelta
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "Modelo para propiedades inmobiliarias"
+    _description = "Propiedad"
     
     name = fields.Char(string="Título", required=True)
     description = fields.Text(string="Descripción")
@@ -52,7 +52,7 @@ class EstateProperty(models.Model):
         ,copy=False
         ,default='new'
     )
-    #29) Nuevos campos property_type_id, buyer_id y salesman_id
+    #29) Nuevos campos Many2one property_type_id, buyer_id y salesman_id
     property_type_id = fields.Many2one(
         comodel_name='estate.property.type'
         ,string="Tipo Propiedad"
@@ -67,4 +67,9 @@ class EstateProperty(models.Model):
         ,string="Vendedor"
         ,copy=False
         ,default=lambda self: self.env.user
+    )
+    #35) Nuevo campo Many2many
+    tag_ids = fields.Many2many(
+        comodel_name='estate.property.tag'
+        ,string="Etiquetas"
     )
