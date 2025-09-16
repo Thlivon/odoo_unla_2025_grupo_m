@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--40) Definir vista de estate.property.offer-->
+<odoo>
+    <data>
+        <!--40) Vista Lista con editable="top"-->
+        <!-- Vista de tipo list -->
+        <record id="custom_view_estate_property_offer_list" model="ir.ui.view">
+            <field name="name">estate.property.offer.list</field>
+            <field name="model">estate.property.offer</field>
+            <field name="type">list</field>
+            <field name="arch" type="xml">
+                <list string="Ofertas" editable="top">
+                    <field name="price"/>
+                    <field name="partner_id"/>
+                    <field name="status"/>
+                </list>
+            </field>
+        </record>
+    </data>
+</odoo>

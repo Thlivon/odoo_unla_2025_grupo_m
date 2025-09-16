@@ -115,6 +115,18 @@
                                     <field name="salesman_id"/>
                                 </group>
                             </page>
+                            <!--41) Se agrega el campo offer_ids en una nueva página-->
+                            <page string="Ofertas">
+                                <group>
+                                    <field name="offer_ids">
+                                        <list editable="top">
+                                            <field name="price"/>
+                                            <field name="partner_id"/>
+                                            <field name="status"/>
+                                        </list>
+                                    </field>
+                                </group>
+                            </page>
                         </notebook>
                     </sheet>
                 </form>
