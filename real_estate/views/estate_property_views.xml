@@ -1,58 +1,136 @@
 <?xml version="1.0"?>
 <odoo>
-    <!-- Acción que abre al vista-->
-    <record id="action_estate_property" model="ir.actions.act_window">
-        <field name="name">Propiedades</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form,search</field>
-    </record>
+    <data>
+        <!-- Acción que abre la vista-->
+        <record id="action_estate_property" model="ir.actions.act_window">
+            <field name="name">Propiedades</field>
+            <field name="res_model">estate.property</field>
+            <field name="view_mode">list,form,search</field>
+        </record>
 
-    <!-- Vista de tipo list -->
-    <record id="view_estate_property_list" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
-        <field name="model">estate.property</field>
-        <field name="type">list</field>
-        <field name="arch" type="xml">
-            <list string="Propiedades">
-                <field name="name"/>
-                <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="facades"/>
-                <field name="garage"/>
-                <field name="garden"/>
-                <field name="garden_area"/>
-                <field name="garden_orientation"/>
-                <field name="date_availability"/>
-                <field name="postcode"/>
-            </list>
-        </field>
-    </record>
-    
-    <!-- Vista de tipo search -->
-    <record id="estate_property_view_search" model="ir.ui.view">
-        <field name="name">estate.property.search</field>
-        <field name="model">estate.property</field>
-        <field name="type">search</field>
-        <field name="arch" type="xml">
-            <search string="Search Properties">
-                <field name="name"/>
-                <field name="postcode"/>
-                <field name="expected_price"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="facades"/>
+        <!-- Vista de tipo list -->
+            <!--22) Vista custom-->
+        <record id="custom_view_estate_property_list" model="ir.ui.view">
+            <field name="name">estate.property.list</field>
+            <field name="model">estate.property</field>
+            <field name="type">list</field>
+            <field name="arch" type="xml">
+                <list string="Propiedades">
+                    <field name="name"/>
+                    <!--36) Se agrega el campo tag_ids-->
+                    <field name="tag_ids" widget="many2many_tags"/>
+                    <field name="postcode"/>
+                    <field name="bedrooms"/>
+                    <field name="living_area"/>
+                    <field name="expected_price"/>
+                    <field name="selling_price"/>
+                    <field name="date_availability"/>
+                </list>
+            </field>
+        </record>
+        
+        <!-- Vista de tipo search -->
+        <record id="custom_estate_property_view_search" model="ir.ui.view">
+            <field name="name">estate.property.search</field>
+            <field name="model">estate.property</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Search Properties">
+                    <field name="name"/>
+                    <field name="postcode"/>
+                    <field name="expected_price"/>
+                    <field name="bedrooms"/>
+                    <field name="living_area"/>
+                    <field name="facades"/>
 
-                <filter string="Mis propiedades" name="my_properties_filter" domain="[('create_uid', '=', uid)]"/>
-                
-                <group expand="0" string="Group By">
-                    <filter string="Usuario" name="group_by_create_uid" context="{'group_by': 'create_uid'}"/>
-                    <filter string="Fecha disponibilidad" name="group_by_date_availability_month" context="{'group_by': 'date_availability:month'}"/>
-                    <filter string="Código Postal" name="group_by_postcode" context="{'group_by': 'postcode'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
-    
+                    <filter string="Mis propiedades" name="my_properties_filter" domain="[('create_uid', '=', uid)]"/>
+                    
+                    <!--24) Filtrar por propiedades disponibles-->
+                    <filter string="Propiedades disponibles" name="available_properties_filter" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+
+                    <group expand="0" string="Group By">
+                        <filter string="Usuario" name="group_by_create_uid" context="{'group_by': 'create_uid'}"/>
+                        <filter string="Fecha disponibilidad" name="group_by_date_availability_month" context="{'group_by': 'date_availability:month'}"/>
+                        <filter string="Código Postal" name="group_by_postcode" context="{'group_by': 'postcode'}"/>
+                        <!--24) Agrupar por estado-->
+                        <filter string="Estado" name="group_by_state" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <!-- Vista de tipo form -->
+        <record id="custom_view_estate_property_form" model="ir.ui.view">
+            <field name="name">estate.property.form</field>
+            <field name="model">estate.property</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Formulario de propiedades">
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <h1>
+                                <field name="name" placeholder="Nombre propiedad"/>
+                            </h1>
+                        </group>
+                        <!--36) Se agrega el campo tag_ids-->
+                        <group>
+                            <field name="tag_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <group>
+                                <!--30) Se agrega el campo property_type_id-->
+                                <field name="property_type_id"/>
+                                <field name="postcode"/>
+                                <field name="date_availability"/>
+                            </group>
+                            <group>
+                                <field name="expected_price"/>
+                                <field name="selling_price"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Descripción">
+                                <group>
+                                    <group>
+                                        <field name="description"/>
+                                        <field name="bedrooms"/>
+                                        <field name="living_area"/>
+                                        <field name="facades"/>
+                                        <field name="garage"/>
+                                    </group>
+                                    <group>
+                                        <field name="garden"/>
+                                        <field name="garden_area"/>
+                                        <field name="garden_orientation"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <!--30) Se agrega el campo property_type_id-->
+                            <page string="Más info.">
+                                <group>
+                                    <field name="buyer_id"/>
+                                    <field name="salesman_id"/>
+                                </group>
+                            </page>
+                            <!--41) Se agrega el campo offer_ids en una nueva página-->
+                            <page string="Ofertas">
+                                <group>
+                                    <field name="offer_ids">
+                                        <list editable="top">
+                                            <field name="price"/>
+                                            <field name="partner_id"/>
+                                            <field name="status"/>
+                                        </list>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
 </odoo>
