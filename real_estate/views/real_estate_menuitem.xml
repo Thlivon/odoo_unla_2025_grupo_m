@@ -3,6 +3,8 @@
     <menuitem id="estate_menu_root" name="Inmobiliaria">
         <menuitem id="estate_menu_advertisements" name="Anuncios">
             <menuitem id="estate_menu_property" name="Propiedades" action="action_estate_property"/>
+            <!--2.12) Vista formulario con su menu-->
+            <menuitem id="estate_menu_property_offer" name="Ofertas" action="action_estate_property_offer"/>
         </menuitem>
         <!--28)Menu Ajustes-->
         <menuitem id="estate_menu_settings" name="Ajustes">

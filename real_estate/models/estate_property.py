@@ -1,6 +1,8 @@
-from odoo import fields, models
+from odoo import fields, models, api
 #Importo relativedelta para trabajar con fechas y horas
 from dateutil.relativedelta import relativedelta
+#Importo UserError para las excepciones
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -79,3 +81,56 @@ class EstateProperty(models.Model):
         ,inverse_name = "property_id"
         ,string = "Ofertas"
     )
+    #2.1) Nuevo campo computado total_area
+    total_area = fields.Float(
+        string="Superficie total"
+        ,compute="_compute_total_area"
+        ,store = True
+    )
+    #2.5) Decorador @api.depends para autocalcular el computado en tiempo real
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+    #2.7) Nuevo campo computado best_offer
+    best_offer = fields.Float(
+        string="Mejor oferta"
+        ,compute="_compute_best_offer"
+    )
+    @api.depends('offer_ids')
+    def _compute_best_offer(self):
+        for record in self:
+            offers = record.offer_ids.mapped('price')
+            record.best_offer = max(offers) if offers else 0
+    #2.13) Onchange al presionar el campo garden
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        for record in self:
+            if (record.garden):
+                record.garden_area = 10
+            else:
+                record.garden_area = 0
+    #2.14) Onchange cuando el precio esperado > 10000                
+    @api.onchange('expected_price')
+    def _onchange_expected_price(self):
+        for record in self:
+            if record.expected_price and record.expected_price < 10000:
+                return {
+                    'warning': {
+                        'title': "Precio Esperado Menor a 10000",
+                        'message': "El precio esperado ingresado es menor a 10000. Si no es un error, ignore esta advertencia.",
+                    }
+                }
+    #2.15) Acciones de los botones de cancelar y vender            
+    def action_property_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Una propiedad ya vendida no puede ser cancelada.")
+            record.state = 'canceled'
+        return True
+    def action_property_sold(self):
+        for record in self:
+            if record.state == 'canceled':
+                raise UserError("Una propiedad cancelada no puede ser marcada como vendida.")
+            record.state = 'sold'
+        return True
