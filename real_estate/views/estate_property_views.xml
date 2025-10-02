@@ -73,12 +73,14 @@
                             name="action_property_cancel" 
                             type="object" 
                             string="Cancelar" 
+                            invisible="state == 'sold'"
                         />
                         <button 
                             name="action_property_sold" 
                             type="object" 
                             string="Marcar como vendida" 
                             class="oe_highlight"
+                            invisible="state == 'canceled'"
                         />
                     </header>
                     <sheet>
