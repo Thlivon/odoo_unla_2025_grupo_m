@@ -67,9 +67,24 @@
             <field name="arch" type="xml">
                 <form string="Formulario de propiedades">
                     <header>
-                        <field name="state" widget="statusbar"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted"/>
+                        <!--2.15) Botones de cancelar y vender-->
+                        <button 
+                            name="action_property_cancel" 
+                            type="object" 
+                            string="Cancelar" 
+                            invisible="state == 'sold'"
+                        />
+                        <button 
+                            name="action_property_sold" 
+                            type="object" 
+                            string="Marcar como vendida" 
+                            class="oe_highlight"
+                            invisible="state == 'canceled'"
+                        />
                     </header>
                     <sheet>
+                        
                         <group>
                             <h1>
                                 <field name="name" placeholder="Nombre propiedad"/>
@@ -89,6 +104,8 @@
                             <group>
                                 <field name="expected_price"/>
                                 <field name="selling_price"/>
+                                <!--2.7) Se agrega el campo best_offer-->
+                                <field name="best_offer"/>
                             </group>
                         </group>
                         <notebook>
@@ -105,6 +122,8 @@
                                         <field name="garden"/>
                                         <field name="garden_area"/>
                                         <field name="garden_orientation"/>
+                                        <!--2.2) Se agrega el campo total_area-->
+                                        <field name="total_area"/>
                                     </group>
                                 </group>
                             </page>
@@ -119,10 +138,13 @@
                             <page string="Ofertas">
                                 <group>
                                     <field name="offer_ids">
-                                        <list editable="top">
+                                        <list>
                                             <field name="price"/>
                                             <field name="partner_id"/>
                                             <field name="status"/>
+                                            <!--2.9) Se agrega campos-->
+                                            <field name="validity"/>
+                                            <field name="date_deadline"/>
                                         </list>
                                     </field>
                                 </group>

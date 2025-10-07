@@ -2,18 +2,71 @@
 <!--40) Definir vista de estate.property.offer-->
 <odoo>
     <data>
+        <!-- Acción que abre la vista-->
+        <!--2.12) Vista formulario con su menu-->
+        <record id="action_estate_property_offer" model="ir.actions.act_window">
+            <field name="name">Ofertas sobre propiedades</field>
+            <field name="res_model">estate.property.offer</field>
+            <field name="view_mode">list,form,search</field>
+        </record>
+
         <!--40) Vista Lista con editable="top"-->
         <!-- Vista de tipo list -->
+        <!--2.8) Se quita el editable="top"-->
         <record id="custom_view_estate_property_offer_list" model="ir.ui.view">
             <field name="name">estate.property.offer.list</field>
             <field name="model">estate.property.offer</field>
             <field name="type">list</field>
             <field name="arch" type="xml">
-                <list string="Ofertas" editable="top">
+                <list string="Ofertas">
                     <field name="price"/>
+                    <field name="status"/>                    
                     <field name="partner_id"/>
-                    <field name="status"/>
+                    <field name="property_id"/>                    
+                    <field name="property_type_id"/>   
+                    <field name="validity"/> <!--2.9) Se agrega campos-->
+                    <field name="date_deadline"/>
+                    <!--2.16) Bóton para aceptar la oferta-->
+                    <button name="action_offer_accept" type="object" string="Aceptar" class="oe_highlight"/>
                 </list>
+            </field>
+        </record>
+
+        <!-- Vista de tipo form -->
+        <!--2.12) Vista formulario con su menu-->
+        <record id="custom_view_estate_property_offer_form" model="ir.ui.view">
+                <field name="name">estate.property.offer.form</field>
+                <field name="model">estate.property.offer</field>
+                <field name="type">form</field>
+                <field name="arch" type="xml">
+                    <form string="Formulario de ofertas">
+                        <sheet>
+                            <group>
+                                <field name="price"/>
+                                <field name="status"/>
+                                <field name="partner_id"/>
+                                <field name="property_id"/>
+                                <field name="property_type_id"/>
+                                <field name="validity"/>
+                                <field name="date_deadline"/>
+                            </group>
+                        </sheet>
+                    </form>
+            </field>
+        </record>
+
+        <!-- Vista de tipo search -->
+        <!--2.12) Group by por tipo de propiedad-->
+        <record id="custom_estate_property_offer_view_search" model="ir.ui.view">
+            <field name="name">estate.property.offer.search</field>
+            <field name="model">estate.property.offer</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Search Offers">
+                    <group expand="0" string="Group By">
+                        <filter string="Tipo de propiedad" name="group_by_property_type_id" context="{'group_by': 'property_type_id'}"/>
+                    </group>
+                </search>
             </field>
         </record>
     </data>
