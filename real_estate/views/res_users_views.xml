@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Herencia de la vista form de res.users -->
+        <record id="view_users_form_inherit" model="ir.ui.view">
+            <field name="name">res.users.form.inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <!-- Encuentro el notebook existente -->
+                <xpath expr="//notebook" position="inside">
+                    <!-- Agrego una nueva página para las propiedades -->
+                    <page string="Propiedades">
+                        <group>
+                            <field name="property_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="postcode"/>
+                                    <field name="bedrooms"/>
+                                    <field name="total_area"/>
+                                    <field name="expected_price"/>
+                                    <field name="selling_price"/>
+                                    <field name="date_availability"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
