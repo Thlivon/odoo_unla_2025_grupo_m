@@ -1,8 +1,9 @@
 {
-    'name': "real_estate",
+    'name': "Inmobiliaria Real Estate",
     'version': '1.0',
-    'summary': 'Real Estate',
+    'summary': 'Inmobiliaria Real Estate',
     'author': "UNLA-GrupoM",
+    'description': 'Módulo de gestión inmobiliaria',
     'depends': ['base'],
     'data': [
         'security/ir.model.category.xml',
@@ -13,6 +14,7 @@
         'views/estate_property_type_views.xml',
         'views/estate_property_offer_views.xml',
         'views/real_estate_menuitem.xml',
+        'views/res_users_views.xml',
     ],
     'installable': True,
     'application': True,

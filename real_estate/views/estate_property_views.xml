@@ -82,6 +82,28 @@
                             class="oe_highlight"
                             invisible="state == 'canceled'"
                         />
+                        <!--2.20) Botón para generar una oferta automática-->
+                        <button 
+                            name="action_generate_automatic_offer" 
+                            type="object" 
+                            string="Generar oferta automática" 
+                        />
+                        <!--2.21) Botones "Sacar etiquetas", "Cargar todas las etiquetas" y "A estrenar"-->
+                        <button 
+                            name="action_remove_all_tags" 
+                            type="object" 
+                            string="Sacar etiquetas"
+                        />
+                        <button 
+                            name="action_add_all_tags" 
+                            type="object" 
+                            string="Cargar todas las etiquetas"
+                        />
+                        <button 
+                            name="action_set_tag_as_new" 
+                            type="object" 
+                            string="A estrenar"
+                        />
                     </header>
                     <sheet>
                         

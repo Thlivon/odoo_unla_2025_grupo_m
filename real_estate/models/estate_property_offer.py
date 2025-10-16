@@ -7,6 +7,10 @@ class EstatePropertyType(models.Model):
     #37) Nuevo modelo estate.property.offer
     _name = "estate.property.offer"
     _description = "Oferta sobre propiedad"
+    #2.18) _sql_contraints para oferta única por persona
+    _sql_constraints = [
+        ('unique_offer_property', 'UNIQUE(partner_id, property_id)', 'La misma persona no puede hacer más de una oferta por la misma propiedad')
+    ]
 
     price = fields.Float(
         string="Precio"
@@ -84,7 +88,30 @@ class EstatePropertyType(models.Model):
             if other_offers:
                 other_offers.write({'status': 'refused'})
 
-        return True            
+        return True    
+
+    #2.23) Redifinición del metodo create()
+    @api.model
+    def create(self, vals):            
+        property = self.env['estate.property'].browse(vals.get('property_id'))
+        if property:    
+            # Solo pueden crearse ofertas que el valor ofertado sea mayor al valor de la mejor oferta hasta al momento
+            if 'price' in vals and vals['price'] <= property.best_offer:
+                raise UserError(f"La oferta debe ser mayor al valor de la mejor oferta actual: {property.best_offer}")
+            # Solo pueden crearse oferta si el estado de la propiedad es 'new' o 'offer_received'
+            if property.state not in ['new', 'offer_received']:
+                raise UserError("No se pueden crear ofertas sobre propiedades que no estén en estado el 'Nuevo' o 'Oferta recibida'.")
+
+            # Llamo al create original para crear la oferta
+            new_offer = super(EstatePropertyType, self).create(vals)
+
+            # Una vez creada la oferta, si el estado de la propiedad es 'new', lo cambio a 'offer_received'
+            if property.state == 'new':
+                property.state = 'offer_received'
+        else:
+            raise UserError("La oferta debe estar asociada a una propiedad válida.")                   
+
+        return new_offer        
     
     
     
